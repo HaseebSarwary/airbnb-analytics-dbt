@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: stg_listings
+    description: "Cleaned and standardised Airbnb listings data"
+    columns:
+      - name: listing_id
+        description: "Unique identifier for each listing"
+        tests:
+          - not_null
+          - unique
+      - name: host_id
+        description: "Foreign key to the hosts table"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_hosts')
+                field: host_id
+      - name: room_type
+        description: "Type of room offered"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
+      - name: minimum_nights
+        description: "Minimum nights required for booking"
+        tests:
+          - not_null
+
+  - name: stg_reviews
+    description: "Cleaned and standardised Airbnb reviews data"
+    columns:
+      - name: listing_id
+        description: "Foreign key to the listings table"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_listings')
+                field: listing_id
+      - name: review_date
+        description: "Date the review was submitted"
+        tests:
+          - not_null
+      - name: review_sentiment
+        description: "Sentiment of the review (positive/neutral/negative)"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+          - accepted_values:
+              arguments:
+                values: ['positive', 'neutral', 'negative']
+              config:
+                severity: warn
+
+  - name: stg_hosts
+    description: "Cleaned and standardised Airbnb hosts data"
+    columns:
+      - name: host_id
+        description: "Unique identifier for each host"
+        tests:
+          - not_null
+          - unique
+      - name: host_name
+        description: "Display name of the host"
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: is_superhost
+        description: "Whether the host is a superhost (boolean)"
+        tests:
+          - not_null
