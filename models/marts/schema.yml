@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: dim_listings
+    description: "Listings dimension table with denormalised host attributes and business categorisations"
+    columns:
+      - name: listing_id
+        description: "Primary key — unique listing identifier"
+        tests:
+          - not_null
+          - unique
+      - name: host_id
+        description: "Foreign key to dim_listings.host_id"
+        tests:
+          - not_null
+      - name: price
+        description: "Price per night in USD, cleaned to numeric"
+        tests:
+          - not_null
+      - name: price_tier
+        description: "Business categorisation of price into budget/mid_range/premium/luxury"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['budget', 'mid_range', 'premium', 'luxury']
+      - name: stay_length_category
+        description: "Business categorisation of minimum nights"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['single_night', 'short_stay', 'medium_stay', 'long_stay']
+
+  - name: fct_reviews
+    description: "Review events fact table at review grain, with denormalised listing context"
+    columns:
+      - name: review_id
+        description: "Surrogate key for each review, generated from listing_id + review_date + reviewer_name"
+        tests:
+          - not_null
+          - unique
+      - name: listing_id
+        description: "Foreign key to dim_listings"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_listings')
+                field: listing_id
+      - name: review_date
+        description: "Date the review was submitted"
+        tests:
+          - not_null
+      - name: is_positive_review
+        description: "Boolean flag for positive sentiment"
+        tests:
+          - not_null
+      - name: is_negative_review
+        description: "Boolean flag for negative sentiment"
+        tests:
+          - not_null

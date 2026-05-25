@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: airbnb
+    description: "Raw Airbnb data loaded from public S3"
+    database: AIRBNB
+    schema: RAW
+    tables:
+      - name: listings
+        description: "Raw Airbnb listings data"
+        identifier: RAW_LISTINGS
+      - name: reviews
+        description: "Raw Airbnb reviews data"
+        identifier: RAW_REVIEWS
+      - name: hosts
+        description: "Raw Airbnb host data"
+        identifier: RAW_HOSTS
