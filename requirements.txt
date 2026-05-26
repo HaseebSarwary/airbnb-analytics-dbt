@@ -1,0 +1,14 @@
+# Core dbt - newer version compatible with pydantic 2.x
+dbt-core>=1.11.0
+dbt-snowflake>=1.11.0
+
+# Orchestration
+dagster>=1.11.0
+dagster-webserver>=1.11.0
+dagster-dbt>=0.27.0
+
+# Data quality
+great-expectations>=1.4.0
+
+# Useful utilities
+python-dotenv>=1.1.0
