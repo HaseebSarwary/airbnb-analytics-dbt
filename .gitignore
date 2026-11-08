@@ -224,3 +224,7 @@ dbt_packages/
 logs/
 # end dbt Cloud content
 dbt_internal_packages/
+
+# Dagster local dev
+.tmp_dagster_home*/
+dagster_project/.tmp_dagster_home*/
